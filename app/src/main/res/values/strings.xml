@@ -1,0 +1,86 @@
+<resources>
+    <string name="app_name">MySchool Check-in</string>
+
+    <string name="API_URL">https://www.webappmyschool.com/api/</string>
+
+    <!-- pos sales slip tag -->
+    <string name="tag_title">POS SALES SLIP</string>
+    <string name="tag_page_header">MERCHANT STUB</string>
+    <string name="tag_page_footer">THANK YOU FOR CHOOSING</string>
+    <string name="tag_merchant_name">MERCHANT NAME</string>
+    <string name="tag_merchant_no">MERCHANT NO.</string>
+    <string name="tag_operator_no">OPERATOR NO.</string>
+    <string name="tag_terminal_no">TERMINAL NO.</string>
+    <string name="tag_issuer">ISSUER</string>
+    <string name="tag_acquirer">ACQUIRER</string>
+    <string name="tag_card_no">CARD NO.</string>
+    <string name="tag_txn_type">TXN. TYPE</string>
+    <string name="tag_batch_no">BATCH NO.</string>
+    <string name="tag_voucher_no">VOUCHER NO.</string>
+    <string name="tag_auth_no">AUTH. NO.</string>
+    <string name="tag_exp_date">EXP. DATE.</string>
+    <string name="tag_ref_no">REF NO.</string>
+    <string name="tag_date">DATE</string>
+    <string name="tag_amount">AMOUNT</string>
+    <string name="tag_total">TOTAL</string>
+    <string name="tag_reference">REFERENCE</string>
+    <string name="tag_cardholder_sign">CARDHOLDER SIGNATURE</string>
+    <string name="tag_phone">PHONE</string>
+
+    <string name="camera">camera</string>
+
+    <string name="mcr_init_err">MCR initialize failure</string>
+    <string name="mcr_read_err">MCR read failure</string>
+    <string name="mcr">MCR</string>
+    <string name="clean">Clean</string>
+
+    <string name="msg_default_status">Place a barcode inside the viewfinder rectangle to scan it.</string>
+    <string name="msg_camera_framework_bug">Sorry, the Android camera encountered a problem. You may need to restart the device.</string>
+
+    <string name="nfc">NFC</string>
+    <string name="nfc_disabled">NFC disabled</string>
+    <string name="nfc_enabled">NFC enabled</string>
+    <string name="nfc_not_support">NFC not support</string>
+    <string name="nfc_write_tag">write tag</string>
+    <string name="nfc_read_tag">read tag</string>
+    <string name="nfc_tag_content">input tag content:</string>
+    <string name="nfc_card_account">Card account:</string>
+
+    <string name="smartcard">SmartCard</string>
+    <string name="smartcard_get_atr">Get ATR</string>
+    <string name="smartcard_send_apdu">Send APDU</string>
+    <string name="smartcard_apdu_command">APDU command:</string>
+    <string name="smartcard_open">Open</string>
+    <string name="smartcard_close">Close</string>
+    <string name="smartcard_open_success">Open success!</string>
+    <string name="smartcard_open_failed">Open failed!</string>
+    <string name="smartcard_close_success">Close success!</string>
+    <string name="smartcard_close_failed">Close failed!</string>
+    <string name="smartcard_send_apdu_failed">Send APDU failed!</string>
+    <string name="smartcard_get_atr_failed">Get ATR failed!</string>
+    <string name="smartcard_init_err">Reader initialize failure!</string>
+
+    <string name="fingerprint">FingerPrint</string>
+    <string name="fingerprint_start">Start Fingerprint</string>
+    <string name="fingerprint_stop">Stop Fingerprint</string>
+    <string name="fingerprint_init_err">Fingerprint initialize failure</string>
+    <string name="fingerprint_got_img_err">Got image failure: %1$d</string>
+
+    <string name="secondary_display">Secondary display</string>
+    <string name="no_secondary_display">Have not Secondary display</string>
+    <string name="start_video">Start play video</string>
+    <string name="stop_video">Stop play video</string>
+    <string name="start_photo">Start play photo</string>
+    <string name="stop_photo">Stop play photo</string>
+    <string name="start_text">Start play text</string>
+    <string name="stop_text">Stop play text</string>
+    <string name="start_customer">Start customer input</string>
+    <string name="stop_customer">Stop customer input</string>
+    <string name="str_input">Please input number</string>
+    <string name="str_get_input">Customer input number:</string>
+    <string name="str_ok">OK</string>
+    <string name="str_amount">Amount:</string>
+    <string name="str_change">Change:</string>
+    <string name="balance_in_card">ยอดเงินคงเหลือในบัตร</string>
+
+</resources>

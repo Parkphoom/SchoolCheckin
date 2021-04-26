@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StudentInfoActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top"
+        android:text="ข้อมูลนักเรียน"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_L"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ชื่อ"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_M"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="@id/student_image"
+        app:layout_constraintLeft_toLeftOf="@id/student_image"
+        app:layout_constraintRight_toRightOf="@id/student_image"
+        app:layout_constraintTop_toTopOf="@id/student_image" />
+
+    <ImageView
+        android:id="@+id/student_image"
+        android:layout_width="286dp"
+        android:layout_height="286dp"
+        app:layout_constraintBottom_toTopOf="@+id/name_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/id_tv"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="รหัส"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_M"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_tv"></TextView>
+
+    <TextView
+        android:id="@+id/room_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ห้อง"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_M"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_tv"></TextView>
+
+    <TextView
+        android:id="@+id/time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="เวลา"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_M"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/room_tv"></TextView>
+
+    <SurfaceView
+        android:id="@+id/cameraView"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
