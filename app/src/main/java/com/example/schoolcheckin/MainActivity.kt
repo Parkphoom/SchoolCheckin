@@ -3,6 +3,7 @@ package com.example.schoolcheckin
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.hardware.Camera
 import android.nfc.NfcAdapter
@@ -18,6 +19,12 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.afollestad.materialdialogs.WhichButton
+import com.afollestad.materialdialogs.actions.setActionButtonEnabled
+import com.afollestad.materialdialogs.callbacks.onCancel
+import com.afollestad.materialdialogs.callbacks.onDismiss
+import com.afollestad.materialdialogs.input.getInputField
+import com.afollestad.materialdialogs.input.input
 import com.example.schoolcheckin.Retrofit.API
 import com.example.schoolcheckin.Retrofit.Student
 import com.example.schoolcheckin.databinding.ActivityMainBinding
@@ -35,22 +42,28 @@ import java.nio.charset.StandardCharsets
 import kotlin.experimental.and
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
     val TAG = "MainLOG"
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private var mCamera: Camera? = null
-
+    var sharedPreferences: SharedPreferences? = null
     private var mNfcAdapter: NfcAdapter? = null
     private var mPendingIntent: PendingIntent? = null
     private var mFilters: Array<IntentFilter>? = null
     private var mTechLists: Array<Array<String>>? = null
     private var mTag: Tag? = null
+    private var IP = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FullScreencall()
         setContentView(binding.root)
-
+        binding.settingBtn.setOnClickListener(this)
+        sharedPreferences = getSharedPreferences(getString(R.string.SettingPref), MODE_PRIVATE)
+        IP = sharedPreferences?.getString(
+            getString(R.string.ServerIP_Pref),
+            getString(R.string.API_URL)
+        ).toString()
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
             prepareNFC()
@@ -63,64 +76,75 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun getStudent(uid: String) {
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(getString(R.string.API_URL))
-            .addConverterFactory(GsonConverterFactory.create())
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .build()
-        val api: API = retrofit.create(API::class.java)
-
-        val dialog = createDialog()
-        dialog.show()
+        IP = sharedPreferences?.getString(
+            getString(R.string.ServerIP_Pref),
+            getString(R.string.API_URL)
+        ).toString()
         try {
+            val retrofit: Retrofit = Retrofit.Builder()
+                .baseUrl(IP)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build()
+            val api: API = retrofit.create(API::class.java)
+            val dialog = createDialog()
+            dialog.show()
+            try {
 
-            val userCall: Call<Student.StudentResponse?>? = api.getStudent("student", "5", uid)
-            userCall!!.enqueue(object : Callback<Student.StudentResponse?> {
-                override fun onResponse(
-                    call: Call<Student.StudentResponse?>,
-                    response: Response<Student.StudentResponse?>
-                ) {
-                    if (response.isSuccessful) {
-                        Log.d(TAG, "onResponse: $response")
-                        Log.e(TAG, "onResponse : " + Gson().toJson(response.body()))
-                        val result = response.body()
+                val userCall: Call<Student.StudentResponse?>? = api.getStudent("student", "5", uid)
+                userCall!!.enqueue(object : Callback<Student.StudentResponse?> {
+                    override fun onResponse(
+                        call: Call<Student.StudentResponse?>,
+                        response: Response<Student.StudentResponse?>
+                    ) {
+                        if (response.isSuccessful) {
+                            Log.d(TAG, "onResponse: $response")
+                            Log.e(TAG, "onResponse : " + Gson().toJson(response.body()))
+                            val result = response.body()
 
-                        dialog.cancel()
+                            dialog.cancel()
 
-                        if (result?.Code.isNullOrEmpty()) {
-                            Toast.makeText(this@MainActivity, "ไม่พบข้อมูล", Toast.LENGTH_SHORT)
-                                .show()
-                        } else {
-                            startActivity(
-                                Intent(this@MainActivity, StudentInfoActivity::class.java)
-                                    .putExtra(
-                                        "Student_Name",
-                                        "${result!!.Title} ${result.FirstName} ${result!!.LastName}"
-                                    )
-                                    .putExtra("Student_Code", result.Code)
-                                    .putExtra(
-                                        "Student_Room",
-                                        "${result.RoomNo} ${result.RoomName}"
-                                    )
-                            )
+                            if (result?.Code.isNullOrEmpty()) {
+                                Toast.makeText(this@MainActivity, "ไม่พบข้อมูล", Toast.LENGTH_SHORT)
+                                    .show()
+                            } else {
+                                startActivity(
+                                    Intent(this@MainActivity, StudentInfoActivity::class.java)
+                                        .putExtra(
+                                            "Student_Name",
+                                            "${result!!.Title} ${result.FirstName} ${result!!.LastName}"
+                                        )
+                                        .putExtra("Student_Code", result.Code)
+                                        .putExtra("Student_Room", result.RoomName)
+                                        .putExtra("Student_Grade", result.GradeName)
+                                )
+                            }
+
+
                         }
-
-
                     }
-                }
 
-                override fun onFailure(call: Call<Student.StudentResponse?>, t: Throwable) {
-                    Log.d(TAG, "onFailure: $t")
-                    dialog.cancel()
-                }
+                    override fun onFailure(call: Call<Student.StudentResponse?>, t: Throwable) {
+                        Log.d(TAG, "onFailure: $t")
+                        dialog.cancel()
+                        createErrorDialog(t.toString()).show()
+                    }
 
-            })
+                })
 
-        } catch (e: JSONException) {
+            } catch (e: JSONException) {
+                e.printStackTrace()
+                Log.d(TAG, "onFailure: $e")
+                dialog.cancel()
+                createErrorDialog(e.toString()).show()
+            }
+
+        } catch (e: Exception) {
             e.printStackTrace()
+            createErrorDialog(e.toString()).show()
             Log.d(TAG, "onFailure: $e")
-            dialog.cancel()
         }
+
 
     }
 
@@ -311,6 +335,61 @@ class MainActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         );
         return pDialog
+    }
+
+    private fun createErrorDialog(contenttext: String): SweetAlertDialog {
+        val pDialog = SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+        pDialog.progressHelper.barColor = Color.parseColor("#E53935")
+        pDialog.titleText = "Error"
+        pDialog.contentText = contenttext
+        pDialog.setCancelable(true)
+        pDialog.confirmText = "ปิด"
+        pDialog.window?.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+        );
+        return pDialog
+    }
+
+    override fun onClick(v: View?) {
+        if (v == binding.settingBtn) {
+            com.afollestad.materialdialogs.MaterialDialog(this@MainActivity).show {
+                val IPad = sharedPreferences?.getString(
+                    getString(R.string.ServerIP_Pref),
+                    getString(R.string.API_URL)
+                )
+                title(R.string.ipsetting)
+                input(
+                    waitForPositiveButton = false,
+                    prefill = IPad,
+                ) { dialog, text ->
+                    val inputField = dialog.getInputField()
+                    val isValid = text.startsWith("", true)
+
+                    inputField?.error = if (isValid) null else "กรุณากรอก IP"
+                    dialog.setActionButtonEnabled(WhichButton.POSITIVE, isValid)
+
+                    sharedPreferences?.edit()
+                        ?.putString(
+                            getString(R.string.ServerIP_Pref),
+                            text.toString()
+                        )
+                        ?.apply()
+
+                }
+                positiveButton(R.string.save) {
+                    FullScreencall()
+                }
+                negativeButton(R.string.cancle)
+                {
+                    FullScreencall()
+                }
+                onDismiss {
+                    FullScreencall()
+                }
+
+            }
+        }
     }
 }
 

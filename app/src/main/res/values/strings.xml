@@ -82,5 +82,10 @@
     <string name="str_amount">Amount:</string>
     <string name="str_change">Change:</string>
     <string name="balance_in_card">ยอดเงินคงเหลือในบัตร</string>
+    <string name="ServerIP_Pref">Server IP Address</string>
+    <string name="ipsetting">ตั้งค่า IP Server ตัวอย่าง(https://www.webappmyschool.com/api/)</string>
+    <string name="save">บันทึก</string>
+    <string name="cancle">ยกเลิก</string>
+    <string name="SettingPref">Setting SharedPreferences</string>
 
 </resources>

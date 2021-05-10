@@ -45,5 +45,8 @@ class Student {
         @SerializedName("RoomName")
         var RoomName: String? = null
 
+        @SerializedName("GradeName")
+        var GradeName: String? = null
+
     }
 }

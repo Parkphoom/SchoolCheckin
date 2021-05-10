@@ -2,7 +2,9 @@ package com.example.schoolcheckin
 
 import android.Manifest
 import android.R.attr.bitmap
+import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.hardware.Camera
@@ -42,19 +44,25 @@ class StudentInfoActivity : AppCompatActivity(), SurfaceHolder.Callback {
             layoutInflater
         )
     }
+    var sharedPreferences: SharedPreferences? = null
     private var mCamera: Camera? = null
     private var bitmap: Bitmap? = null
     private var TAG = "StudentLog"
+    private var IP = ""
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         FullScreencall()
+        sharedPreferences = getSharedPreferences(getString(R.string.SettingPref), MODE_PRIVATE)
+
+
 
         binding.nameTv.text = intent.getStringExtra("Student_Name")
         binding.idTv.text = intent.getStringExtra("Student_Code")
-        binding.roomTv.text = intent.getStringExtra("Student_Room")
+        binding.roomTv.text = "ระดับชั้น ${intent.getStringExtra("Student_Grade")} ห้อง ${intent.getStringExtra("Student_Room")}"
         binding.timeTv.text = Public().getDateTimeNow()
 
 
@@ -203,8 +211,14 @@ class StudentInfoActivity : AppCompatActivity(), SurfaceHolder.Callback {
     }
 
     private fun postStudent() {
+
+        IP = sharedPreferences?.getString(
+            getString(R.string.ServerIP_Pref),
+            getString(R.string.API_URL)
+        ).toString()
+
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(getString(R.string.API_URL))
+            .baseUrl(IP)
             .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ScalarsConverterFactory.create())
             .build()

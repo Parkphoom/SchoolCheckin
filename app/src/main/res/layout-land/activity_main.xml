@@ -4,7 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/Basil_cream"
     tools:context=".MainActivity">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/setting_btn"
+        android:layout_margin="8dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@drawable/ic_setting"
+        android:backgroundTint="@color/Basil_green_primary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/logo"
@@ -20,6 +31,8 @@
         android:textAlignment="center"
         android:text="แตะบัตรเพื่อเช็คชื่อเข้า-ออกโรงเรียน"
         android:textSize="@dimen/text_size_XL"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/Basil_green_primary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
